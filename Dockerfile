@@ -3,9 +3,8 @@
 FROM python:3.11-slim
 
 WORKDIR /app
+COPY ./shipping_site /app
 
-# Copy project files into /app
-COPY . .
 
 # Make sure scripts are executable and run the build
 RUN chmod +x build.sh && ./build.sh
