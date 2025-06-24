@@ -1801,25 +1801,38 @@
         
         themeToggle.addEventListener('click', toggleTheme);
         mobileThemeToggle.addEventListener('click', toggleTheme);
-        
-        // Mobile Menu
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
-            mobileMenuBtn.innerHTML = mobileMenu.classList.contains('active') ? 
-                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-        });
-        
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!mobileMenu.contains(e.target) && e.target !== mobileMenuBtn) {
+      // Mobile Menu Elements
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+
+if (mobileMenuBtn && mobileMenu) {
+    // Toggle menu on button click
+    mobileMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent click from bubbling to document
+
+        const isActive = mobileMenu.classList.toggle('active');
+
+        // Update icon based on menu state
+        mobileMenuBtn.innerHTML = isActive
+            ? '<i class="fas fa-times"></i>'
+            : '<i class="fas fa-bars"></i>';
+    });
+
+    // Close menu on outside click
+    document.addEventListener('click', (e) => {
+        const clickedInsideMenu = mobileMenu.contains(e.target);
+        const clickedButton = mobileMenuBtn.contains(e.target);
+
+        if (!clickedInsideMenu && !clickedButton) {
+            if (mobileMenu.classList.contains('active')) {
                 mobileMenu.classList.remove('active');
                 mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
             }
-        });
-        
+        }
+    });
+} else {
+    console.warn("Mobile menu button or menu element not found.");
+}
         // Language Selector
         const languageSelect = document.getElementById('language-select');
         const mobileLanguageSelect = document.getElementById('mobile-language-select');
